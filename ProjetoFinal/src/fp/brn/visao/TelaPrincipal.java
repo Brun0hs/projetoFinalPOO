@@ -176,9 +176,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextFieldTelefone.setText("+__ (__) _____-____ ");
         jFormattedTextFieldTelefone.setToolTipText("");
         jFormattedTextFieldTelefone.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jFormattedTextFieldTelefone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextFieldTelefoneActionPerformed(evt);
+            }
+        });
 
         jComboBoxSexo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jComboBoxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MASCULINO", "FEMININO" }));
@@ -297,9 +301,29 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
         try{
-            int id = Integer.parseInt(jTextFieldIdentificador.getText());
+            //exception id
+            if(jTextFieldIdentificador.getText().isEmpty()) 
+                throw new Exception("Identificador deve ser informado");
+            if(Integer.parseInt(jTextFieldIdentificador.getText())<0) 
+                throw new Exception("Identificador não pode ser negativo");
+
+            //exception nome
+            if(jTextFieldNome.getText().isEmpty())  
+                throw new Exception("Nome deve ser informado");
             
-            String nome = jTextFieldNome.getText();
+            //exception telefone
+            System.out.println(jFormattedTextFieldTelefone.getText());
+            if (jFormattedTextFieldTelefone.getText().equals("+   (  )      -     "))
+                throw new Exception("Telefone deve ser informado");
+            if (!jFormattedTextFieldTelefone.getText().matches("\\+\\d{2} \\(\\d{2}\\) \\d{5}-\\d{4} ")) 
+                throw new Exception("Telefone deve estar no formato +## (##) #####-####");
+            
+            //exception email
+            if(jTextFieldEmail.getText().isEmpty()) 
+                throw new Exception("Email deve ser informado");
+            
+            
+            int id = Integer.parseInt(jTextFieldIdentificador.getText());
             
             String Stelefone = jFormattedTextFieldTelefone.getText();
             String ddi = Stelefone.substring(1, 3).trim();
@@ -307,12 +331,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             String numero = Stelefone.substring(9).trim().replace("-", "").replace(" ", "");;
             Telefone fone = new Telefone(Integer.parseInt(ddi), Integer.parseInt(ddd), Integer.parseInt(numero));
             
+            String nome = jTextFieldNome.getText();
+            
             String email = jTextFieldEmail.getText();
             
             enumSexo sexo = enumSexo.valueOf((String)jComboBoxSexo.getSelectedItem());
             
             Contato Pessoa = new Contato(id,nome,fone,sexo,email);
-                       
+            
             JOptionPane.showMessageDialog(this, "Contato adicionado com sucesso");
         } catch (Exception erro){
             JOptionPane.showMessageDialog(this, erro.getMessage());
@@ -320,12 +346,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonIncluirActionPerformed
 
     private void jButtonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarActionPerformed
-    try{
+        try{
             JOptionPane.showMessageDialog(this, "CONSULTA EM CONSTRUÇÃO");
         } catch (Exception erro){
             JOptionPane.showMessageDialog(this, erro.getMessage());
         }
     }//GEN-LAST:event_jButtonConsultarActionPerformed
+
+    private void jFormattedTextFieldTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldTelefoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextFieldTelefoneActionPerformed
 
     /**
      * @param args the command line arguments

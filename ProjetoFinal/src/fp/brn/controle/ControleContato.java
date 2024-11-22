@@ -14,6 +14,7 @@ public class ControleContato implements IContatoCRUD{
 
     @Override
     public void incluir(Contato pessoa) throws Exception {
+        
         throw new Exception("controle sendo executado - incluir");
     }
 
