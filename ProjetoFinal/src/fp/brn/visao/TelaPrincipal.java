@@ -168,6 +168,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jTextFieldIdentificador.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jTextFieldNome.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextFieldNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldNomeKeyReleased(evt);
+            }
+        });
 
         jTextFieldEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -302,33 +307,37 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
         try{
             //exception id
-            if(jTextFieldIdentificador.getText().isEmpty()) 
+            if (jTextFieldIdentificador.getText().isEmpty()) 
                 throw new Exception("Identificador deve ser informado");
-            if(Integer.parseInt(jTextFieldIdentificador.getText())<0) 
-                throw new Exception("Identificador não pode ser negativo");
-
-            //exception nome
-            if(jTextFieldNome.getText().isEmpty())  
-                throw new Exception("Nome deve ser informado");
+            if (!jTextFieldIdentificador.getText().matches("\\d+")) 
+                throw new Exception("Identificador deve maior que zero");
+            int id = Integer.parseInt(jTextFieldIdentificador.getText());
+            if(id<1) throw new Exception("Identificador deve ser maior que zero");
             
+            //exception nome
+            if (jTextFieldNome.getText().isEmpty())  
+                throw new Exception("Nome deve ser informado");
+            if (jTextFieldNome.getText().matches(".*\\d.*")) 
+                throw new Exception("Nome não pode conter números!");
+
             //exception telefone
-            System.out.println(jFormattedTextFieldTelefone.getText());
             if (jFormattedTextFieldTelefone.getText().equals("+   (  )      -     "))
                 throw new Exception("Telefone deve ser informado");
-            if (!jFormattedTextFieldTelefone.getText().matches("\\+\\d{2} \\(\\d{2}\\) \\d{5}-\\d{4} ")) 
-                throw new Exception("Telefone deve estar no formato +## (##) #####-####");
             
             //exception email
-            if(jTextFieldEmail.getText().isEmpty()) 
+            if (jTextFieldEmail.getText().isEmpty()) 
                 throw new Exception("Email deve ser informado");
-            
-            
-            int id = Integer.parseInt(jTextFieldIdentificador.getText());
+            if (!jTextFieldEmail.getText().matches(".+@.+\\..+")) 
+                throw new Exception("Email deve estar ser válido");
+
             
             String Stelefone = jFormattedTextFieldTelefone.getText();
             String ddi = Stelefone.substring(1, 3).trim();
+            if (ddi.equals("00")) throw new Exception("O numero de DDI não pode ser 0");
             String ddd = Stelefone.substring(5, 7).trim();
-            String numero = Stelefone.substring(9).trim().replace("-", "").replace(" ", "");;
+            if (ddd.equals("00")) throw new Exception("O numero de DDD não pode ser 0");
+            String numero = Stelefone.substring(9).trim().replace("-", "").replace(" ", "");
+            if (numero.equals("000000000"))  throw new Exception("O numero não pode ser 0");
             Telefone fone = new Telefone(Integer.parseInt(ddi), Integer.parseInt(ddd), Integer.parseInt(numero));
             
             String nome = jTextFieldNome.getText();
@@ -338,6 +347,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             enumSexo sexo = enumSexo.valueOf((String)jComboBoxSexo.getSelectedItem());
             
             Contato Pessoa = new Contato(id,nome,fone,sexo,email);
+            
+            objControle.incluir(Pessoa);
             
             JOptionPane.showMessageDialog(this, "Contato adicionado com sucesso");
         } catch (Exception erro){
@@ -356,6 +367,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jFormattedTextFieldTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldTelefoneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jFormattedTextFieldTelefoneActionPerformed
+
+    private void jTextFieldNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldNomeKeyReleased
+        int position = jTextFieldNome.getCaretPosition();
+        jTextFieldNome.setText(jTextFieldNome.getText().toUpperCase());
+        jTextFieldNome.setCaretPosition(position);
+    }//GEN-LAST:event_jTextFieldNomeKeyReleased
 
     /**
      * @param args the command line arguments

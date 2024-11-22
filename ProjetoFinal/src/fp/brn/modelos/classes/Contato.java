@@ -19,11 +19,13 @@ public class Contato {
 
     public Contato(){}
 
-    public Contato(int idContato, String nome, Telefone fone, enumSexo sexo, String email){
+    public Contato(int idContato, String nome, Telefone fone, enumSexo sexo, String email)throws Exception{
         this.idContato = idContato;
+        if (nome.isEmpty()) throw new Exception("Nome deve ser informado");
         this.nome = nome;
         this.fone = fone;
         this.sexo = sexo;
+        if (email.isEmpty()) throw new Exception("Nome deve ser informado");
         this.email = email;
     }
 
@@ -35,11 +37,12 @@ public class Contato {
         this.idContato = idContato;
     }
 
-    public String getNome() {
+    public String getNome(){
         return this.nome;
     }
 
-    public void setNome(String nome) {
+    public void setNome(String nome) throws Exception {
+        if (nome.isEmpty()) throw new Exception("Nome deve ser informado");
         this.nome = nome;
     }
 
@@ -63,7 +66,8 @@ public class Contato {
         return this.email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email) throws Exception {
+        if (email.isEmpty()) throw new Exception("Nome deve ser informado");
         this.email = email;
     }
 }
