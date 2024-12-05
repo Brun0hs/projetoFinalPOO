@@ -55,9 +55,7 @@ public class ContatoDAO implements IContatoCRUD{
     @Override
     public void alterar(Contato pessoa) throws Exception {
         try {//nome, ddi, ddd, numero, sexo, email
-          String sql = "update Contatos set nome = ?, ddi = ?  "
-                  + "ddd = ?, numero = ?, sexo = ?, email = ? "
-                  + "where idContato = ?";
+          String sql = "update Contatos set nome = ?, ddi = ? ,ddd = ?, numero = ?, sexo = ?, email = ? where idContato = ?";
           PreparedStatement preparedStatement = conexao.prepareStatement(sql);
           preparedStatement.setString(1, pessoa.getNome());
           preparedStatement.setInt(2, pessoa.getFone().getDdi());
@@ -77,9 +75,16 @@ public class ContatoDAO implements IContatoCRUD{
 
     @Override
     public void excluir(int identificador) throws Exception {
-        throw new Exception("Exclindo do SGBD - Construindo");
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement("delete from Contatos where idContato=?");
+            // Parameters start with 1
+            preparedStatement.setInt(1, identificador);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
+    
     @Override
     public Contato consultar(int identificador) throws Exception {
         throw new Exception("Consultando no SGBD - Construindo");

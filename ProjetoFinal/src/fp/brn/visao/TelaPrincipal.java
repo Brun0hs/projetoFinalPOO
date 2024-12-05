@@ -305,18 +305,46 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
-        try{
-            int id=0;
-            String StrId = jTextFieldIdentificador.getText();
-            if(!StrId.isEmpty()){
-                id = Integer.parseInt(StrId);
+        try {
+            String strId = jTextFieldIdentificador.getText();
+            if (strId.equals("")) {
+                JOptionPane.showMessageDialog(this, "Identificador não pode estar vazio.");
+                return;
             }
+            int id = Integer.parseInt(strId);
+
+            int confirmacao = JOptionPane.showConfirmDialog(this, "Você deseja realmente alterar esse contato?", "Alterar Contato", JOptionPane.YES_NO_OPTION);
+            if (confirmacao != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            String nome = jTextFieldNome.getText();
+           
+            String Stelefone = jFormattedTextFieldTelefone.getText();
+            Telefone fone = null;
+            if(!Stelefone.equals("+   (  )      -     ")){
+                String ddi = Stelefone.substring(1, 3).trim();
+                String ddd = Stelefone.substring(5, 7).trim();
+                String numero = Stelefone.substring(9).trim().replace("-", "").replace(" ", "");
+                fone = new Telefone(Integer.parseInt(ddi), Integer.parseInt(ddd), Integer.parseInt(numero));
+            }
+
+            String email = jTextFieldEmail.getText();
             
-            Contato pessoa=new Contato();
-            pessoa.setIdContato(id);
-            
-            objControle.alterar(pessoa);
-        } catch (Exception erro){
+            enumSexo sexo = enumSexo.valueOf((String) jComboBoxSexo.getSelectedItem());
+
+            Contato contato = new Contato(id, nome, fone, sexo, email);
+
+            objControle.alterar(contato);
+            JOptionPane.showMessageDialog(this, "Contato alterado com sucesso!");
+
+            jTextFieldIdentificador.setText("");
+            jTextFieldNome.setText("");
+            jTextFieldEmail.setText("");
+            jFormattedTextFieldTelefone.setText("");
+            jComboBoxSexo.setSelectedIndex(0);
+
+        } catch (Exception erro) {
             JOptionPane.showMessageDialog(this, erro.getMessage());
         }
     }//GEN-LAST:event_jButtonAlterarActionPerformed
