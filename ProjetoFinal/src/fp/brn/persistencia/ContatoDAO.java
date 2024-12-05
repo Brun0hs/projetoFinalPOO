@@ -32,18 +32,18 @@ public class ContatoDAO implements IContatoCRUD{
     @Override
     public void incluir(Contato pessoa) throws Exception {
         try {
-        String sql =  "insert into Contatos(nome, ddi, ddd, numero, sexo, email)"
-                +     "values(?,?,?,?,?,?);";
-        //Criando vinculo entre o comando SQL e o SGBD
-        PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-        preparedStatement.setString(1, pessoa.getNome());
-        preparedStatement.setInt(2, pessoa.getFone().getDdi());
-        preparedStatement.setInt(3, pessoa.getFone().getDdd());
-        preparedStatement.setInt(4,pessoa.getFone().getNumero());
-        preparedStatement.setString(5,pessoa.getSexo().toString());
-        preparedStatement.setString(6,pessoa.getEmail());
-        // Mandando o comando SQL para SGBD executar
-        preparedStatement.executeUpdate();
+            String sql =  "insert into Contatos(nome, ddi, ddd, numero, sexo, email)"
+                    +     "values(?,?,?,?,?,?);";
+            //Criando vinculo entre o comando SQL e o SGBD
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, pessoa.getNome());
+            preparedStatement.setInt(2, pessoa.getFone().getDdi());
+            preparedStatement.setInt(3, pessoa.getFone().getDdd());
+            preparedStatement.setInt(4,pessoa.getFone().getNumero());
+            preparedStatement.setString(5,pessoa.getSexo().toString());
+            preparedStatement.setString(6,pessoa.getEmail());
+            // Mandando o comando SQL para SGBD executar
+            preparedStatement.executeUpdate();
         } catch (SQLException erro) {
           //Erro do comando SQL - chave, coluna, nome da tabela, ...
           throw new Exception("SQL Erro: "+ erro.getMessage());
@@ -54,7 +54,25 @@ public class ContatoDAO implements IContatoCRUD{
 
     @Override
     public void alterar(Contato pessoa) throws Exception {
-        throw new Exception("Alterando no SGBD - Construindo");    
+        try {//nome, ddi, ddd, numero, sexo, email
+          String sql = "update Contatos set nome = ?, ddi = ?  "
+                  + "ddd = ?, numero = ?, sexo = ?, email = ? "
+                  + "where idContato = ?";
+          PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+          preparedStatement.setString(1, pessoa.getNome());
+          preparedStatement.setInt(2, pessoa.getFone().getDdi());
+          preparedStatement.setInt(3, pessoa.getFone().getDdd());
+          preparedStatement.setInt(4, pessoa.getFone().getNumero());
+          preparedStatement.setString(5, pessoa.getSexo().toString());
+          preparedStatement.setString(6, pessoa.getEmail());
+          preparedStatement.setInt(7, pessoa.getIdContato());
+          preparedStatement.executeUpdate();
+        } catch (SQLException erro) {
+            //Erro do comando SQL - chave, coluna, nome da tabela, ...
+            throw new Exception("SQL Erro: "+ erro.getMessage());
+        } catch(Exception erro){
+            throw new Exception("Alterar Servicos Persistencia: " + erro);
+        }  
     }
 
     @Override

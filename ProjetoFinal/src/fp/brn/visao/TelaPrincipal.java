@@ -8,6 +8,7 @@ import fp.brn.controle.ControleContato;
 import fp.brn.modelos.interfaces.IContatoCRUD;
 import fp.brn.modelos.classes.*;
 import fp.brn.modelos.enumeration.enumSexo;
+import java.util.Set;
 /**
  *
  * @author Bruno
@@ -305,33 +306,49 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
         try{
-            JOptionPane.showMessageDialog(this, "ALTERAÇÃO EM CONSTRUÇÃO");
+            int id=0;
+            String StrId = jTextFieldIdentificador.getText();
+            if(!StrId.isEmpty()){
+                id = Integer.parseInt(StrId);
+            }
+            
+            Contato pessoa=new Contato();
+            pessoa.setIdContato(id);
+            
+            objControle.alterar(pessoa);
         } catch (Exception erro){
             JOptionPane.showMessageDialog(this, erro.getMessage());
         }
     }//GEN-LAST:event_jButtonAlterarActionPerformed
 
     private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
-        try{            
-            int id = Integer.parseInt(jTextFieldIdentificador.getText());
+        try{                        
+            String nome=jTextFieldNome.getText();
             
             String Stelefone = jFormattedTextFieldTelefone.getText();
-            String ddi = Stelefone.substring(1, 3).trim();
-            String ddd = Stelefone.substring(5, 7).trim();
-            String numero = Stelefone.substring(9).trim().replace("-", "").replace(" ", "");
-            Telefone fone = new Telefone(Integer.parseInt(ddi), Integer.parseInt(ddd), Integer.parseInt(numero));
-            
-            String nome = jTextFieldNome.getText();
+            Telefone fone = null;
+            if(!Stelefone.equals("+   (  )      -     ")){
+                String ddi = Stelefone.substring(1, 3).trim();
+                String ddd = Stelefone.substring(5, 7).trim();
+                String numero = Stelefone.substring(9).trim().replace("-", "").replace(" ", "");
+                fone = new Telefone(Integer.parseInt(ddi), Integer.parseInt(ddd), Integer.parseInt(numero));
+            }
             
             String email = jTextFieldEmail.getText();
             
             enumSexo sexo = enumSexo.valueOf((String)jComboBoxSexo.getSelectedItem());
             
-            Contato Pessoa = new Contato(id,nome,fone,sexo,email);
+            Contato Pessoa = new Contato(0,nome,fone,sexo,email);
             
             objControle.incluir(Pessoa);
             
             JOptionPane.showMessageDialog(this, "Contato adicionado com sucesso");
+            
+            jTextFieldIdentificador.setText("");
+            jTextFieldNome.setText("");
+            jTextFieldEmail.setText("");
+            jFormattedTextFieldTelefone.setText("");
+            
         } catch (Exception erro){
             JOptionPane.showMessageDialog(this, erro.getMessage());
         }
@@ -352,8 +369,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jTextFieldNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldNomeKeyReleased
         int position = jTextFieldNome.getCaretPosition();
         jTextFieldNome.setText(jTextFieldNome.getText().toUpperCase());
-        jTextFieldNome.setCaretPosition(position);
-    }//GEN-LAST:event_jTextFieldNomeKeyReleased
+        jTextFieldNome.setCaretPosition(position);    }//GEN-LAST:event_jTextFieldNomeKeyReleased
 
     /**
      * @param args the command line arguments

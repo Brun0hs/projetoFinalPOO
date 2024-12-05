@@ -26,7 +26,7 @@ public class ControleContato implements IContatoCRUD{
     @Override
     public void incluir(Contato pessoa) throws Exception {
         try {
-            verificar(pessoa);
+            verificar(pessoa,false);
             persistenciaContato.incluir(pessoa);
         } catch (Exception erro) {
             throw erro;
@@ -36,7 +36,8 @@ public class ControleContato implements IContatoCRUD{
     @Override
     public void alterar(Contato pessoa) throws Exception {
         try{
-            throw new Exception("controle sendo executado - alterar");
+            verificar(pessoa,true);
+            persistenciaContato.alterar(pessoa);
         }catch(Exception erro){
             throw erro;
         }
@@ -78,15 +79,16 @@ public class ControleContato implements IContatoCRUD{
         }
     }
     
-    private void verificar(Contato pessoa)throws Exception {
+    private void verificar(Contato pessoa, boolean busca)throws Exception {
         // mudar para lançar exception
-        if(pessoa.getIdContato()==1001) throw new Exception("Identificador deve ser informado");
-        if(pessoa.getIdContato()<1) throw new Exception("Identificador deve ser maior que zero");
+        if(busca){
+            if(pessoa.getIdContato()<1) throw new Exception("Identificador deve ser maior que zero");
+        }
         
         if(pessoa.getNome().isEmpty()) throw new Exception("Nome deve ser informado");
         if(pessoa.getNome().matches(".*\\d.*")) throw new Exception("Nome não pode conter números");
         
-        if(pessoa.getFone().equals("+   (  )      -     ")) throw new Exception("Telefone deve ser informado"); 
+        if(pessoa.getFone() == null) throw new Exception("Telefone deve ser informado"); 
         if(pessoa.getFone().getDdi()<=0 || pessoa.getFone().getDdi()>99) throw new Exception("Numero do DDI deve ser valido [1-99]");
         if(pessoa.getFone().getDdd()<=0 || pessoa.getFone().getDdd()>99) throw new Exception("Numero do DDD deve ser valido [1-99]");
         if(pessoa.getFone().getNumero()<=0 || pessoa.getFone().getNumero()>999999999) throw new Exception("Numero do telefone deve ser valido");
