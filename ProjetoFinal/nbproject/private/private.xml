@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Home/Desktop/projetoFinalPOO/ProjetoFinal/src/fp/brn/modelos/classes/Contato.java</file>
-            <file>file:/C:/Users/Home/Desktop/projetoFinalPOO/ProjetoFinal/src/fp/brn/visao/TelaPrincipal.java</file>
-            <file>file:/C:/Users/Home/Desktop/projetoFinalPOO/ProjetoFinal/src/fp/brn/controle/ControleContato.java</file>
-            <file>file:/C:/Users/Home/Desktop/projetoFinalPOO/ProjetoFinal/src/fp/brn/persistencia/ContatoDAO.java</file>
+            <file>file:/C:/Users/Bruno/Desktop/projetoFinalPOO-main/ProjetoFinal/src/fp/brn/modelos/classes/Contato.java</file>
+            <file>file:/C:/Users/Bruno/Desktop/projetoFinalPOO-main/ProjetoFinal/src/fp/brn/visao/TelaPrincipal.java</file>
+            <file>file:/C:/Users/Bruno/Desktop/projetoFinalPOO-main/ProjetoFinal/src/fp/brn/ferramentas/ConexaoBD.java</file>
+            <file>file:/C:/Users/Bruno/Desktop/projetoFinalPOO-main/ProjetoFinal/src/fp/brn/persistencia/ContatoDAO.java</file>
+            <file>file:/C:/Users/Bruno/Desktop/projetoFinalPOO-main/ProjetoFinal/src/fp/brn/controle/ControleContato.java</file>
         </group>
     </open-files>
 </project-private>

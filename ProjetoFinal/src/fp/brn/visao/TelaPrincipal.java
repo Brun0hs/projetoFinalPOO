@@ -298,7 +298,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         try{
-            JOptionPane.showMessageDialog(this, "EXCLUSAO EM CONSTRUÇÃO");
+            String strId = jTextFieldIdentificador.getText();
+            if (strId.equals("")) {
+                JOptionPane.showMessageDialog(this, "Identificador não pode estar vazio.");
+                return;
+            }
+            int confirmacao = JOptionPane.showConfirmDialog(this, "Você deseja realmente excluir esse contato?", "Excluir Contato", JOptionPane.YES_NO_OPTION);
+            if (confirmacao != JOptionPane.YES_OPTION) {
+                return;
+            }
+            int id = Integer.parseInt(strId);
+
+            objControle.excluir(id);
+            JOptionPane.showMessageDialog(this, "Contato alterado com sucesso!");
+
+            jTextFieldIdentificador.setText("");
+            jTextFieldNome.setText("");
+            jTextFieldEmail.setText("");
+            jFormattedTextFieldTelefone.setText("");
+            jComboBoxSexo.setSelectedIndex(0);
+            
         } catch (Exception erro){
             JOptionPane.showMessageDialog(this, erro.getMessage());
         }

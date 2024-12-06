@@ -46,7 +46,7 @@ public class ControleContato implements IContatoCRUD{
     @Override
     public void excluir(int identificador) throws Exception {
         try{
-            throw new Exception("controle sendo executado - excluir");
+            persistenciaContato.excluir(identificador);
         }catch(Exception erro){
             throw erro;
         }
