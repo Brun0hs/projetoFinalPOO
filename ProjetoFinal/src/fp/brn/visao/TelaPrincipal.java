@@ -8,7 +8,9 @@ import fp.brn.controle.ControleContato;
 import fp.brn.modelos.interfaces.IContatoCRUD;
 import fp.brn.modelos.classes.*;
 import fp.brn.modelos.enumeration.enumSexo;
+import java.util.List;
 import java.util.Set;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author Bruno
@@ -20,9 +22,24 @@ public class TelaPrincipal extends javax.swing.JFrame {
      */
     public TelaPrincipal(){
         initComponents();
+        jTableContatos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                // Obter o índice da linha selecionada
+                int row = jTableContatos.getSelectedRow();
+                if (row != -1) {
+                    // Preencher os campos com os dados da linha selecionada
+                    jTextFieldIdentificador.setText(jTableContatos.getValueAt(row, 0).toString());
+                    jTextFieldNome.setText(jTableContatos.getValueAt(row, 1).toString());
+                    jFormattedTextFieldTelefone.setText(jTableContatos.getValueAt(row, 2).toString());
+                    jTextFieldEmail.setText(jTableContatos.getValueAt(row, 3).toString());
+                    jComboBoxSexo.setSelectedItem(jTableContatos.getValueAt(row, 4).toString());
+                }
+            }
+        });
         this.setLocationRelativeTo(null);
         try{
             objControle = new ControleContato();
+            mostrarContatosNaGrid();
         }
         catch(Exception erro){
             JOptionPane.showMessageDialog(this, erro.getMessage());
@@ -56,6 +73,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jTextFieldEmail = new javax.swing.JTextField();
         jFormattedTextFieldTelefone = new javax.swing.JFormattedTextField();
         jComboBoxSexo = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableContatos = new javax.swing.JTable();
 
@@ -74,7 +92,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(548, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,7 +153,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonConsultar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                    .addComponent(jButtonConsultar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonIncluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonExcluir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -151,7 +169,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(jButtonAlterar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonConsultar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
@@ -191,15 +209,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
         jFormattedTextFieldTelefone.setToolTipText("");
         jFormattedTextFieldTelefone.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jFormattedTextFieldTelefone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFormattedTextFieldTelefoneActionPerformed(evt);
-            }
-        });
 
         jComboBoxSexo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jComboBoxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MASCULINO", "FEMININO" }));
         jComboBoxSexo.setToolTipText("");
+
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setText("Limpar Campos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -219,10 +240,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addComponent(jTextFieldNome)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jFormattedTextFieldTelefone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(jTextFieldIdentificador, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(jComboBoxSexo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 325, Short.MAX_VALUE))
+                            .addComponent(jFormattedTextFieldTelefone, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldIdentificador, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxSexo, javax.swing.GroupLayout.Alignment.LEADING, 0, 160, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jTextFieldEmail))
                 .addContainerGap())
         );
@@ -233,7 +255,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jTextFieldIdentificador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
+                .addGap(19, 19, 19)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -248,7 +270,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jComboBoxSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -275,9 +298,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -296,6 +319,28 @@ public class TelaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void mostrarContatosNaGrid(){
+        try {
+            List<Contato> listaDeContatos = null;
+            listaDeContatos = objControle.ListagemDeContatos();
+            DefaultTableModel model =  (DefaultTableModel) jTableContatos.getModel();
+            model.setNumRows(0); 
+            if(listaDeContatos.isEmpty()) 
+            throw new Exception("Lista de Contatos esta Vazia");
+            for(Contato objContato:listaDeContatos){
+                String[] linha = new String[5];
+                linha[0]= objContato.getIdContato()+ "";
+                linha[1]= objContato.getNome();
+                linha[2]= objContato.getFone().toString();
+                linha[3]= objContato.getEmail();
+                linha[4]= objContato.getSexo().toString();
+                model.addRow(linha);
+            }  
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }
+    
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         try{
             String strId = jTextFieldIdentificador.getText();
@@ -310,13 +355,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             int id = Integer.parseInt(strId);
 
             objControle.excluir(id);
-            JOptionPane.showMessageDialog(this, "Contato alterado com sucesso!");
+            JOptionPane.showMessageDialog(this, "Contato excluido com sucesso!");
 
             jTextFieldIdentificador.setText("");
             jTextFieldNome.setText("");
             jTextFieldEmail.setText("");
             jFormattedTextFieldTelefone.setText("");
             jComboBoxSexo.setSelectedIndex(0);
+            mostrarContatosNaGrid();
             
         } catch (Exception erro){
             JOptionPane.showMessageDialog(this, erro.getMessage());
@@ -362,7 +408,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             jTextFieldEmail.setText("");
             jFormattedTextFieldTelefone.setText("");
             jComboBoxSexo.setSelectedIndex(0);
-
+            mostrarContatosNaGrid();
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(this, erro.getMessage());
         }
@@ -395,7 +441,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             jTextFieldNome.setText("");
             jTextFieldEmail.setText("");
             jFormattedTextFieldTelefone.setText("");
-            
+            mostrarContatosNaGrid();
         } catch (Exception erro){
             JOptionPane.showMessageDialog(this, erro.getMessage());
         }
@@ -403,20 +449,56 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButtonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarActionPerformed
         try{
-            JOptionPane.showMessageDialog(this, "CONSULTA EM CONSTRUÇÃO");
+            if(!jTextFieldIdentificador.getText().isEmpty()){
+                objControle.consultar(Integer.parseInt(jTextFieldIdentificador.getText()));
+                int id = Integer.parseInt(jTextFieldIdentificador.getText());
+                Contato contato = objControle.consultar(id); // Retorna um objeto Contato
+                if (contato != null) {
+                    JOptionPane.showMessageDialog(this,
+                        "ID: " + contato.getIdContato() + "\n" +
+                        "Nome: " + contato.getNome() + "\n" +
+                        "Telefone: +" + contato.getFone().getDdi() + " (" + contato.getFone().getDdd() + ") " + contato.getFone().getNumero() + "\n" +
+                        "Sexo: " + contato.getSexo() + "\n" +
+                        "Email: " + contato.getEmail(),
+                        "Dados do Contato", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Contato não encontrado com o ID informado.");
+                }
+            }
+            else if (!jTextFieldNome.getText().isEmpty()) {
+                String nome = jTextFieldNome.getText();
+                Contato contato = objControle.consultar(nome);
+                if (contato != null) {
+                    JOptionPane.showMessageDialog(this,
+                        "ID: " + contato.getIdContato() + "\n" +
+                        "Nome: " + contato.getNome() + "\n" +
+                        "Telefone: +" + contato.getFone().getDdi() + " (" + contato.getFone().getDdd() + ") " + contato.getFone().getNumero() + "\n" +
+                        "Sexo: " + contato.getSexo() + "\n" +
+                        "Email: " + contato.getEmail(),
+                        "Dados do Contato", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Contato não encontrado com o NOME informado.");
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Por favor, informe o ID ou o Nome para realizar a consulta.");
+            }
         } catch (Exception erro){
             JOptionPane.showMessageDialog(this, erro.getMessage());
         }
     }//GEN-LAST:event_jButtonConsultarActionPerformed
 
-    private void jFormattedTextFieldTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldTelefoneActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextFieldTelefoneActionPerformed
-
     private void jTextFieldNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldNomeKeyReleased
         int position = jTextFieldNome.getCaretPosition();
         jTextFieldNome.setText(jTextFieldNome.getText().toUpperCase());
         jTextFieldNome.setCaretPosition(position);    }//GEN-LAST:event_jTextFieldNomeKeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        jTextFieldIdentificador.setText("");
+        jTextFieldNome.setText("");
+        jTextFieldEmail.setText("");
+        jFormattedTextFieldTelefone.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -454,6 +536,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAlterar;
     private javax.swing.JButton jButtonConsultar;
     private javax.swing.JButton jButtonExcluir;

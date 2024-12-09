@@ -44,4 +44,10 @@ public class Telefone {
     public void setNumero(int numero) {
             this.numero = numero;
     }
+    
+    public String toString(){
+        String s="";
+        s+="+"+ddi+" ("+ddd+") "+numero;
+        return s;
+    }
 }

@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 // Classe de conexao
 import fp.brn.ferramentas.ConexaoBD;
+import fp.brn.modelos.enumeration.enumSexo;
+import java.util.LinkedList;
 /**
  *
  * @author Bruno
@@ -87,17 +89,80 @@ public class ContatoDAO implements IContatoCRUD{
     
     @Override
     public Contato consultar(int identificador) throws Exception {
-        throw new Exception("Consultando no SGBD - Construindo");
+        String sql = "SELECT * FROM Contatos WHERE idContato = ?";
+        try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
+            preparedStatement.setInt(1, identificador);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                Contato objContato = new Contato();
+                objContato.setIdContato(rs.getInt("idContato"));
+                objContato.setNome(rs.getString("nome"));
+                Telefone fone = new Telefone();
+                fone.setDdi(rs.getInt("ddi"));
+                fone.setDdd(rs.getInt("ddd"));
+                fone.setNumero(rs.getInt("numero"));
+                objContato.setFone(fone);
+                objContato.setSexo(enumSexo.valueOf(rs.getString("sexo")));
+                objContato.setEmail(rs.getString("email"));
+                return objContato; // Retorna o contato encontrado
+            } else {
+                throw new Exception("Contato não encontrado para o ID fornecido.");
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao consultar por ID: " + e.getMessage());
+        }
     }
 
     @Override
     public Contato consultar(String nome) throws Exception {
-        throw new Exception("Consultando no SGBD - Construindo");
+        String sql = "SELECT * FROM Contatos WHERE nome LIKE ? ORDER BY idContato LIMIT 1";
+        try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
+            preparedStatement.setString(1, "%" + nome + "%"); // Busca parcial por nome
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                Contato objContato = new Contato();
+                objContato.setIdContato(rs.getInt("idContato"));
+                objContato.setNome(rs.getString("nome"));
+                Telefone fone = new Telefone();
+                fone.setDdi(rs.getInt("ddi"));
+                fone.setDdd(rs.getInt("ddd"));
+                fone.setNumero(rs.getInt("numero"));
+                objContato.setFone(fone);
+                objContato.setSexo(enumSexo.valueOf(rs.getString("sexo")));
+                objContato.setEmail(rs.getString("email"));
+                return objContato; // Retorna o contato encontrado
+            } else {
+                throw new Exception("Contato não encontrado para o nome fornecido.");
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao consultar por nome: " + e.getMessage());
+        }
     }
 
     @Override
     public List<Contato> ListagemDeContatos() throws Exception {
-        throw new Exception("Listando do SGBD - Construindo");
+        List<Contato> listaDeContatos = new LinkedList<>();
+        String sql = "select * from Contatos order by idContato";
+        try {
+            Statement statement = conexao.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while(rs.next()) {
+                Contato objContato = new Contato();
+                objContato.setIdContato(rs.getInt("idContato"));
+                objContato.setNome(rs.getString("nome"));
+                Telefone fone = new Telefone();
+                fone.setDdi(rs.getInt("ddi"));
+                fone.setDdd(rs.getInt("ddd"));
+                fone.setNumero(rs.getInt("numero"));
+                objContato.setFone(fone);
+                objContato.setSexo(enumSexo.valueOf(rs.getString("sexo")));
+                objContato.setEmail(rs.getString("email"));
+                listaDeContatos.add(objContato);
+            }
+            return listaDeContatos;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;    
     }
-    
 }

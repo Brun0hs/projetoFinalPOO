@@ -55,7 +55,7 @@ public class ControleContato implements IContatoCRUD{
     @Override
     public Contato consultar(int identificador) throws Exception {
         try{
-            throw new Exception("controle sendo executado - consultar");
+            return persistenciaContato.consultar(identificador);
         }catch(Exception erro){
             throw erro;
         }
@@ -64,7 +64,7 @@ public class ControleContato implements IContatoCRUD{
     @Override
     public Contato consultar(String nome) throws Exception {
         try{
-            throw new Exception("controle sendo executado - consultar");
+            return persistenciaContato.consultar(nome);
         }catch(Exception erro){
             throw erro;
         }
@@ -73,7 +73,7 @@ public class ControleContato implements IContatoCRUD{
     @Override
     public List<Contato> ListagemDeContatos() throws Exception {
         try{
-            throw new Exception("controle sendo executado - listagem");
+            return persistenciaContato.ListagemDeContatos();
         }catch(Exception erro){
             throw erro;
         }
