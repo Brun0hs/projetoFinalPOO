@@ -457,7 +457,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this,
                         "ID: " + contato.getIdContato() + "\n" +
                         "Nome: " + contato.getNome() + "\n" +
-                        "Telefone: +" + contato.getFone().getDdi() + " (" + contato.getFone().getDdd() + ") " + contato.getFone().getNumero() + "\n" +
+                        "Telefone: +" + contato.getFone().toString() + "\n" +
                         "Sexo: " + contato.getSexo() + "\n" +
                         "Email: " + contato.getEmail(),
                         "Dados do Contato", JOptionPane.INFORMATION_MESSAGE);
@@ -469,13 +469,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 String nome = jTextFieldNome.getText();
                 Contato contato = objControle.consultar(nome);
                 if (contato != null) {
-                    JOptionPane.showMessageDialog(this,
-                        "ID: " + contato.getIdContato() + "\n" +
-                        "Nome: " + contato.getNome() + "\n" +
-                        "Telefone: +" + contato.getFone().getDdi() + " (" + contato.getFone().getDdd() + ") " + contato.getFone().getNumero() + "\n" +
-                        "Sexo: " + contato.getSexo() + "\n" +
-                        "Email: " + contato.getEmail(),
-                        "Dados do Contato", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Contato não encontrado com o NOME informado.");
                 }

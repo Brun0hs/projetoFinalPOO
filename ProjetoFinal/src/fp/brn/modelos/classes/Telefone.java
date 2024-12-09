@@ -45,9 +45,12 @@ public class Telefone {
             this.numero = numero;
     }
     
-    public String toString(){
-        String s="";
-        s+="+"+ddi+" ("+ddd+") "+numero;
-        return s;
+    public String toString() {
+        String numeroStr = String.format("%d", numero);
+
+        String parte1 = numeroStr.substring(0, numeroStr.length() - 4);
+        String parte2 = numeroStr.substring(numeroStr.length() - 4);
+
+        return '+'+ddi + " (" + ddd + ") " + parte1 + '-' + parte2;
     }
 }
